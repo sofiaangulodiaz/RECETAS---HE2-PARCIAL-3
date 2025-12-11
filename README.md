@@ -1,75 +1,146 @@
-# HE2-IA-PARCIAL-3---
-Este proyecto implementa un sistema RAG completo para recomendar y explicar recetas en español. Usa sentence-transformers como encoder para recuperar recetas relevantes desde un dataset real de Hugging Face, y un modelo generativo open-source como decoder para producir explicaciones claras, paso a paso y adaptadas a la consulta del usuario.
-📘 README — RAG de Recetas en Español
-🥘 Asistente de Cocina con Retrieval-Augmented Generation (RAG)
+# 🍳 Sistema RAG para Recomendación y Explicación de Recetas
+### Recuperación semántica y generación de instrucciones de cocina en español
 
-Este proyecto implementa un asistente de recetas en español usando la arquitectura RAG (Retrieval-Augmented Generation).
+---
 
-El sistema:
+## 👤 Autores
+- **Gabriela Zamora**
+- **Daniel**
+- **Felipe Rosas**
+- **Sofía Angulo**
 
-Recupera recetas relevantes según la consulta del usuario usando un encoder basado en Transformer.
+---
 
-Genera una explicación paso a paso usando un modelo generativo open-source.
+## 🎯 Descripción del Proyecto
 
-Ejemplo de consulta:
+Este proyecto implementa un **asistente inteligente de cocina** basado en **RAG (Retrieval-Augmented Generation)**.  
+El sistema permite que un usuario escriba una consulta en español, por ejemplo:
 
-“Tengo arroz y huevo. Quiero algo rápido para el desayuno y sin horno.”
+> “Tengo arroz y huevo, quiero algo rápido para el desayuno y sin horno.”
 
-Este pipeline demuestra, en la práctica, cómo funcionan los componentes clave de NLP vistos en clase: embeddings, Transformers, recuperación semántica y modelos generativos.
+El asistente combina dos componentes:
 
-🚀 Tecnologías principales
-🔹 Encoder (Retriever)
+- 🔍 **Recuperación semántica:** encuentra recetas relevantes usando un encoder multilingüe.
+- ✨ **Generación de texto:** explica la receta paso a paso usando un modelo generativo open-source.
 
-Modelo: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+Este proyecto aplica conceptos como **Transformers, embeddings, búsqueda semántica, retrieval, decoders y arquitectura RAG**.
 
-Tipo: Transformer encoder-only
+---
 
-Uso:
+## 📚 Dataset
 
-Convierte recetas y consultas en embeddings semánticos
+### Características principales
+- **Fuente:** Hugging Face  
+- **Dataset:** `m3hrdadfi/recipe_nlg_lite`  
+- **Tamaño:** 7,000+ recetas  
+- **Columnas clave:**
+  - name  
+  - ingredients  
+  - steps  
+  - description  
 
-Permite buscar recetas similares usando similitud de coseno
+Para el prototipo se usa un subconjunto de 300 recetas.
 
-🔹 Vector Store
+---
 
-Construido en memoria usando numpy
+## 🧠 Arquitectura del Sistema
 
+### **1. Encoder (Retriever)**
+- Modelo: `paraphrase-multilingual-MiniLM-L12-v2`
+- Tipo: Transformer **encoder-only**
+- Función: generar **embeddings semánticos** para comparar consultas y recetas.
+
+### **2. Vector Store**
+Almacenado temporalmente en memoria (NumPy).  
 Contiene:
+- embeddings de recetas  
+- metadatos (nombre, ingredientes, pasos)
 
-Embeddings de recetas
+Permite recuperación por **similitud de coseno**.
 
-Metadatos (nombre, ingredientes, instrucciones)
+### **3. Decoder (Generative Model)**
+- Modelo: `TinyLlama/TinyLlama-1.1B-Chat-v1.0`
+- Tipo: Transformer **decoder-only**
+- Función:
+  - elegir la receta más adecuada  
+  - explicar pasos numerados  
+  - usar lenguaje simple  
+  - no inventar ingredientes  
 
-Permite recuperación rápida sin base de datos externa
+---
 
-🔹 Decoder (Generative Model)
+## 🚀 Flujo de Trabajo
 
-Modelo recomendado:
+1. Carga y preprocesamiento del dataset  
+2. Generación de embeddings con el encoder  
+3. Búsqueda semántica  
+4. Construcción del prompt RAG  
+5. Generación de la respuesta final  
+6. Prueba con consultas reales  
 
-TinyLlama/TinyLlama-1.1B-Chat-v1.0 (ligero, open-source y compatible con Colab)
+---
 
-Tipo: Transformer decoder-only
+## 🧪 Ejemplo de Uso
 
-Genera:
+**Entrada:**
+> “Tengo pollo y arroz, quiero algo rápido y sin horno.”
 
-explicación paso a paso
+**Salida esperada:**
+Receta recomendada: Arroz con Pollo Rápido
 
-recomendaciones adaptadas
+Corta el pollo en trozos pequeños.
 
-lenguaje simple apto para principiantes
+Calienta una sartén y dóralo.
 
-🔹 Dataset
+Agrega arroz, caldo y sal.
 
-Hugging Face: m3hrdadfi/recipe_nlg_lite
+Cocina a fuego medio por 15 minutos.
 
-Contiene:
+Sirve caliente.
 
-nombres
+Resumen: receta sencilla, económica y sin necesidad de horno.
 
-ingredientes
 
-pasos detallados
+---
 
-descripciones
+## 🛠️ Instalación y Uso
 
-Se utiliza un subconjunto (~300 recetas) para experimentación rápida
+### Prerrequisitos
+```bash
+Python 3.9+
+pip
+torch
+
+Instalación
+pip install datasets sentence-transformers transformers accelerate bitsandbytes numpy torch
+
+Clonar el repositorio
+git clone https://github.com/<usuario>/<repo>.git
+
+Ejecutar
+
+Abrir:
+
+notebooks/RECETAS.ipynb
+
+
+Ejecutar todas las celdas.
+
+📦 Modelos Utilizados
+Componente	Modelo	Rol
+Encoder	paraphrase-multilingual-MiniLM-L12-v2	Embeddings
+Vector Store	NumPy	Almacenamiento
+Decoder	TinyLlama-1.1B-Chat-v1.0	Generación
+Dataset	recipe_nlg_lite	Base de recetas
+🎓 Objetivos Académicos
+
+Comprender encoder vs decoder
+
+Construir un sistema RAG real
+
+Aplicar embeddings y similitud semántica
+
+Integrar retrieval + generación
+
+Implementar un asistente funcional de NLP
+
